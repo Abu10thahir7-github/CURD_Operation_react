@@ -12,23 +12,19 @@ const userSchema=mongoose.Schema({
         type:String,
         
     },
-    age:{
-        type:Number
-    },
-    place:{
-        type:String
-    },
     email:{
         type:String
     },
     password:{
         type:String
+    },
+ place:{
+        type:String
     }
-
 })
 
 //model
 
-const userModel=mongoose.model('users',userSchema)
+const UserModel=mongoose.model('users',userSchema)
 
-module.exports=userModel;
+module.exports=UserModel;

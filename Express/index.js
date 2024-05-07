@@ -102,7 +102,7 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
-const userModel = require("./model/userModel");
+const UserModel = require("./model/UserModel");
 app.use(express.json());
 
 const port = 5000;
@@ -117,54 +117,44 @@ mongoose
   });
 
 app.use(cors());
-app.post("/postdata", async (req, res) => {
-  try {
-    const { name, place, email, password } = req.body;
-    const user = userModel.create({ name, place, email, password });
-   
-    res.send("data added successfully");
-  } catch (err) {
-    console.log(err + "error in post data");
-  }
-});
 
-app.get("/", (req, res) => {
-  res.send("hello world");
-});
+app.get("/", (req,res) =>{
+  UserModel.find({})
+  .then(users => res.json(users) )
+  .catch(err => res.json(err))
+}),
 
-app.get("/getdata", async (req, res) => {
-  try {
-    const getUsers = await userModel.find();
-    res.send(getUsers);
-    console.log(getUsers);
-  } catch (err) {
-    console.log(err);
-    res.send("Server Error");
-  }
-});
+app.get('/getUSer/:id', (req,res)=>{
+  const id = req.params.id;
+  UserModel.findById({_id:id})
+  .then(users => res.json(users))
+  .catch(err=> res.json(err))
+}),
+
+app.put('/updateUser/:id', (req,res)=>{
+const id = req.params.id;
+UserModel.findByIdAndUpdate({_id:id},
+  {name:req.body.name,
+    email:req.body.email,
+    password:req.body.password,
+  place:req.body.place})
+.then(users => res.json(users))
+.catch(err=> res.json(err))
+}),
 
 
-// Route to delete a product
-app.delete('/deletedata/:id', (req, res) => {
-  try {
-      const { id } = req.params;
-      // Filter out the product with the specified id
-      const newData = product.filter(item => item.id !== parseInt(id));
+app.post("/createUser", (req,res)=>{
+UserModel.create(req.body)
+.then(users => res.json(users)) 
+.catch(err => res.json(err))
+}),
 
-      if (newData.length !== product.length) {
-          // Update the product array if a product was deleted
-          product = newData;
-          console.log(product);
-          res.send("Data deleted successfully");
-      } else {
-          // If no product was deleted, send a 404 status
-          res.status(404).send("Data not found");
-      }
-  } catch (error) {
-      console.log(error);
-      res.status(500).send("Internal server error");
-  }
-});
+app.delete('/deleteUser/:id',(req,res)=>{
+const id=req.params.id;
+UserModel.findByIdAndDelete({_id: id})
+.then(res => res.json(res))
+.catch(err => res.json(err))
+})
 
 app.listen(port, () => {
   console.log("server is running on port", port);
