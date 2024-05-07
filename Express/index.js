@@ -110,7 +110,7 @@ const port = 5000;
 const mongoose = require("mongoose");
 
 mongoose
-  .connect("mongodb://localhost:27017/mongodbSample")
+  .connect("mongodb+srv://abu10thahir7:OvtCeseyA4StMACC@cluster0.af4waob.mongodb.net/")
   .then(() => console.log("connected to mongo database successfully"))
   .catch((err) => {
     console.log(err);
