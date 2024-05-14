@@ -110,7 +110,10 @@ const port = 5000;
 const mongoose = require("mongoose");
 
 mongoose
-  .connect("mongodb+srv://abu10thahir7:OvtCeseyA4StMACC@cluster0.af4waob.mongodb.net/")
+  .connect("mongodb://localhost:27017/mongodbSample")
+  
+  // .connect("mongodb+srv://abu10thahir7:OvtCeseyA4StMACC@cluster0.af4waob.mongodb.net/")
+
   .then(() => console.log("connected to mongo database successfully"))
   .catch((err) => {
     console.log(err);
@@ -157,5 +160,53 @@ UserModel.findByIdAndDelete({_id: id})
 })
 
 app.listen(port, () => {
-  console.log("server is running on port", port);
+    console.log("server is running on port", port);
 });
+
+
+// const express = require("express");
+// const cors = require("cors");
+// const app = express();
+// const mongoose = require("mongoose");
+// const multer = require("multer");
+// const path = require("path");
+
+// const port = 5000;
+
+// mongoose.connect('mongodb://localhost:27017/image-curd');
+
+// app.use(cors());
+// app.use(express.json());
+// app.use(express.static('public'));
+
+// const storage = multer.diskStorage({
+//     destination: (req, file, cb) => {
+//         cb(null, 'public/images');
+//     },
+//     filename: (req, file, cb) => {
+//         cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+//     }
+// });
+
+// const upload = multer({ storage: storage });
+
+// const imageSchema = new mongoose.Schema({
+//     image: String
+// });
+
+// const Image = mongoose.model('Image', imageSchema);
+
+// app.post('/upload', upload.single('file'), (req, res) => {
+//     Image.create({ image: req.file.filename })
+//         .then(result => {
+//             console.log(result);
+//             res.send("file uploaded successfully");
+//         })
+//         .catch(err => {
+//             console.log(err);
+//             res.status(500).send("Internal Server Error");
+//         });
+// });
+
+
+
